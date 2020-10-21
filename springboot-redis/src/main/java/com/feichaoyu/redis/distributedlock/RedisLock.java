@@ -1,5 +1,6 @@
 package com.feichaoyu.redis.distributedlock;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisLock implements AutoCloseable {
 
+    @Autowired
     private RedisTemplate redisTemplate;
 
     private String key;
@@ -25,11 +27,10 @@ public class RedisLock implements AutoCloseable {
 
     private TimeUnit timeUnit;
 
-    public RedisLock(RedisTemplate redisTemplate, String key, long expireTime, TimeUnit timeUnit) {
-        this.redisTemplate = redisTemplate;
+    public RedisLock(String key, long expireTime, TimeUnit timeUnit) {
         this.key = key;
-        this.expireTime = expireTime;
         this.value = UUID.randomUUID().toString().replace("-", "");
+        this.expireTime = expireTime;
         this.timeUnit = timeUnit;
     }
 
